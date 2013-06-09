@@ -34,10 +34,14 @@ Mongoose =
  * @module
  **/
 Mongoskin = 
+  sync-connect: !->
+		db = Mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
+    return db
+    
   connect: (callback) ->
     mongo = config.mongo
-    mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
-    return callback null, mongoskin.db
+    db = mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
+    return callback null, db
 
   disconnect: (callback) ->
     mongoskin.db.close !(err)->
@@ -50,6 +54,13 @@ Mongoskin =
 Database =
   _db = null
   _mongo = Mongoskin
+
+	sync-db: !->
+		if !@_db
+			@_db = Mongoskin.sync-connect!
+			return @_db
+		else
+			return @_db
 
   db: (callback) ->
     if not @_db
