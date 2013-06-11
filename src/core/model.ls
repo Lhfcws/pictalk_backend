@@ -13,42 +13,51 @@ db = Database.sync-db!
  * @module
  **/
 model =
-	count: !(collection, condition={}, callback) ->
+	count: (collection, condition={}, callback) ->
 		coll = db.collection collection
 		coll.count condition, !(err,count) ->
 			if err
 				throw err
-			callback null, count
+			return callback null, count
 
-	select: !(collection, condition={}, callback) ->
+	select: (collection, condition={}, callback) ->
 		coll = db.collection collection
 		coll.find condition .toArray !(err, result) ->
 			if err
 				throw err
 			else
-				callback null, result
+				return callback null, result
 
-	find: !(collection, condition={}, callback) ->
+	find: (collection, condition={}, callback) ->
 		coll = db.collection collection
 		coll.findOne condition,!(err, result) ->
 			if err
 				throw err
-			callback null, result
+			return callback null, result
 
-	insert: !(collection, data={}, callback) ->
+	insert: (collection, data={}, callback) ->
 		if data == {}
-			callback errors
+			return callback errors.INSERT_ERROR
 		else
 			db.collection collection .insert data, !(err)->
 				if err
 					throw err
-				callback null
+				return callback null
 
-	delete: !(collection, condition={}, callback) ->
+  update: (collection, condition={}, content={}, callback) ->
+    if content == {}
+      return callback errors.UPDATE_ERROR
+    db.collection collection .update condition, content, !(err) ->
+      if err
+        throw err
+      return callback null
+
+
+	delete: (collection, condition={}, callback) ->
 		coll = db.collection collection
 		coll.remove condition, !(err, result) ->
 			if err
 				throw err
-			callback null
+			return callback null
 
 module.exports <<< model

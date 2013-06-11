@@ -4,6 +4,7 @@ user =
 	email: \xxx@xx.com 
 	mobile:	\13800138000
 	username: \Lhfcws
+  password: \123456
 	avatar: \http://xxx.xx.xx.png
 	sn:  # [], example ->
 	*	sn_type: \sinaweibo
