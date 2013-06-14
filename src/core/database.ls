@@ -33,11 +33,11 @@ Mongoose =
  *       this object should be moved to an independent new file.
  * @module
  **/
-Mongoskin = 
+Mongoskin =
   sync-connect: !->
-		db = Mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
+    db = Mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
     return db
-    
+
   connect: (callback) ->
     mongo = config.mongo
     db = mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
@@ -55,12 +55,12 @@ Database =
   _db = null
   _mongo = Mongoskin
 
-	sync-db: !->
-		if !@_db
-			@_db = Mongoskin.sync-connect!
-			return @_db
-		else
-			return @_db
+  sync-db: !->
+    if !@_db
+      @_db = Mongoskin.sync-connect!
+      return @_db
+    else
+      return @_db
 
   db: (callback) ->
     if not @_db

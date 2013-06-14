@@ -4,8 +4,7 @@
  * @file
  **/
 
-_path = '../'
-require! [_path+'database', _path+'model',  async]
+require! ['../database', '../model',  async]
 db = database.sync-db!
 /**
  * @description Include some methods to visit user data.
@@ -47,3 +46,6 @@ User-model =
       if err
         throw err
       return callback null, result
+
+
+module.exports <<< User-model

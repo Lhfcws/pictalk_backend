@@ -4,8 +4,7 @@
  * @file
  **/
 
-_path = '../'
-require! [assert, './user-model', _path+'../conf/errors']
+require! [assert, './user-model', '../../conf/errors']
 
 format = (user) ->
   if not user.email or not user.username
@@ -27,6 +26,16 @@ format = (user) ->
  * @module
  */
 User =
+  login: (user-obj, callback) ->
+    user = {}
+    user.user-id = user-obj.user-id
+    user.password = user-obj.password
+
+    user-model.find-user user, (err, result) ->
+      if not not result
+        return callback null, true
+      return callback null, false
+
   user-exist: (user-id, callback) ->
     user-model.find-user {user-id: user-id}, (err, result) ->
       if not not result

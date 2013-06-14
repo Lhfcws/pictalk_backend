@@ -1,7 +1,7 @@
 # User Object
-user = 
+user =
 	user-id: \xxx@xx.com  # == email
-	email: \xxx@xx.com 
+	email: \xxx@xx.com
 	mobile:	\13800138000
 	username: \Lhfcws
   password: \123456
