@@ -30,6 +30,7 @@ error-dictionary =
   \USER_NEXIST : 'User does not existed.'
   # USER-ERROR
   \USER_DUPLICATE : 'User with the same email has existed, please change another one.'
+  \USER_LOGIN : 'User does not existed or password is not correct.'
   # WARNING
 
 /**

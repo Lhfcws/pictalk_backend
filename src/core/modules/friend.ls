@@ -32,13 +32,13 @@ friend =
       condition1.friend-nickname = _friend.user-name
 
       async.series [
-          (err, cb1)->
-           friend-model.insert-friend condition, (err) ->
-             return cb1 null
-          ,
-          (err, cb2) ->
-            friend-model.insert-friend condition1, (err) ->
-             return cb2 null
+        (err, cb1)->
+          friend-model.insert-friend condition, (err) ->
+            return cb1 null
+        ,
+        (err, cb2) ->
+          friend-model.insert-friend condition1, (err) ->
+            return cb2 null
         ],
         (err) ->
           return callback null
@@ -84,9 +84,8 @@ friend =
       condition.friend-id = _condition.friend-id
       condition1 = reverse_frd condition
 
-    async.series
-      [ 
-        (err, cb1)->
+    async.series [
+      (err, cb1)->
         if flag
           friend-model.delete-friend condition1, (err) ->
             return cb1 null
@@ -100,8 +99,8 @@ friend =
           friend.get-friends condition, (err0, result) ->
             async.each result, iterator, (err1) ->
               return cb1 null
-        ,
-        (err, cb2) ->
+      ,
+      (err, cb2) ->
         friend-model.delete-friend condition, (err) ->
           return cb2 null
       ],

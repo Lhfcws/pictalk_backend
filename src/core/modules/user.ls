@@ -4,7 +4,7 @@
  * @file
  **/
 
-require! [assert, './user-model', '../../conf/errors']
+require! [assert, MD5,  './user-model', '../../conf/errors']
 
 format = (user) ->
   if not user.email or not user.username
@@ -15,7 +15,7 @@ format = (user) ->
     email: user.email  or void
     mobile: user.mobile or void
     avatar: user.avatar or void
-    password: user.password
+    password: MD5 user.password
     username: user.username
     sn: void
   }
@@ -32,9 +32,9 @@ User =
     user.password = user-obj.password
 
     user-model.find-user user, (err, result) ->
-      if not not result
-        return callback null, true
-      return callback null, false
+      if not result
+        return callback new errors 2, 'USER_LOGIN'
+      return callback null
 
   user-exist: (_user, callback) ->
     if typeof _user == 'string'
@@ -51,7 +51,7 @@ User =
     user = format user-obj
     User.user-exist user.user-id, (err, exist) ->
       if exist
-        return callback errors.user-error.USER_DUPLICATE
+        return callback new errors 2, 'USER_DUPLICATE'
       user-model.insert-user user, (err) ->
         return callback null
 
@@ -60,15 +60,15 @@ User =
     user = {user-id: user-obj.user-id, avatar: user-obj.avatar}
     User.user-exist user.user-id, (err, exist) ->
       if not exist
-        return callback errors.dev-error.USER_NEXIST
+        return callback new errors 1, 'USER_NEXIST'
     user-model.update-user user, (err) ->
       return callback null
 
-  update-user-information: (user-obj, callback) ->
+  update-user-info: (user-obj, callback) ->
     user = format user-obj
     User.user-exist user.user-id, (err, exist) ->
       if not exist
-        return callback errors.dev-error.USER_NEXIST
+        return callback new errors 1, 'USER_NEXIST'
       user-model.update-user user, (err) ->
         return callback null
 
@@ -78,15 +78,30 @@ User =
 
   change-password: (user-obj, callback) ->
     user = {}
-    user.password = user-obj.password
+    user.password = MD5 user-obj.password
     user.user-id = user-obj.user-id
 
     user-model.user-exist user, (err, exist) ->
       if not exist
-        return callback errors.dev-error.USER_NEXIST
+        return callback new errors 1, 'USER_NEXIST'
 
       delete user.user-id
-      user.password = user-obj.new-password
+      user.password = MD5 user-obj.new-password
       user-model.update-user user, (err) ->
         return callback null
 
+  get-a-user: (user-obj, callback) ->
+    user-model.find-user user-obj, (err, result) ->
+      if err
+        throw err
+      if not result
+        return callback new errors 1, 'USER_NEXIST'
+      return callback null, result
+
+  get-users: (user-obj, callback) ->
+    user-model.select-user user-obj, (err, result) ->
+      if err
+        throw err
+      if not result
+        return callback new errors 1, 'USER_NEXIST'
+      return callback null, result
