@@ -13,10 +13,10 @@ message =
 		content: ''		# Binary text maybe?
 		url: '/home/sdcard/pictalk/message/20130328/{#picid}/sounds/54e2d3as.ogg'
 
-	creator: \lhfcws@gmail.com	# user id
+  creator: \lhfcws@gmail.com	# user id
   receiver: \chenxj@foxmail.com # user id
-	time:	'2013-03-28-09-50-43'	# Any time format is ok. If better to be easy to read and parse.
-	anchor:	# An anchor object. We use a point to be the center point of the square. The size of square will be defined in #Config.
-	*	center-x: 100 # px
-		center-y: 100 # px
+	  time:	'2013-03-28-09-50-43'	# Any time format is ok. If better to be easy to read and parse.
+	  anchor:	# An anchor object. We use a point to be the center point of the square. The size of square will be defined in #Config.
+	  * center-x: 100 # px
+		  center-y: 100 # px
 

@@ -36,8 +36,13 @@ User =
         return callback null, true
       return callback null, false
 
-  user-exist: (user-id, callback) ->
-    user-model.find-user {user-id: user-id}, (err, result) ->
+  user-exist: (_user, callback) ->
+    if typeof _user == 'string'
+      condition.user-id = _user
+    else if typeof _user == 'object'
+      condition = _user
+
+    user-model.find-user condition, (err, result) ->
       if not not result
         return callback null, true
       return callback null, false
@@ -70,3 +75,18 @@ User =
   delete-user: (user-id, callback) ->
     user-model.delete-user {user-id: user-id}, (err) ->
       return callback null
+
+  change-password: (user-obj, callback) ->
+    user = {}
+    user.password = user-obj.password
+    user.user-id = user-obj.user-id
+
+    user-model.user-exist user, (err, exist) ->
+      if not exist
+        return callback errors.dev-error.USER_NEXIST
+
+      delete user.user-id
+      user.password = user-obj.new-password
+      user-model.update-user user, (err) ->
+        return callback null
+
