@@ -44,7 +44,7 @@ Message =
         return callback err
       return callback null, result
 
-  __get-message-list-by-user: (condition, callback) ->
+  get-message-list-by-user: (condition, callback) ->
     if not condition
       return callback 'Param Error.'
     message-model.get-messages condition, (err, result) ->
