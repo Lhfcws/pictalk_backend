@@ -1,5 +1,5 @@
 /**
- * @description Message Controller.
+ * @description message Controller.
  * @author Lhfcws
  * @file
  **/
@@ -26,7 +26,19 @@ objectify = function(attr, _obj){
  * @module
  */
 Message = {
-  createAMessage: function(message, callback){},
+  createAMessage: function(msgobject, callback){
+    return messageModel.countMessage({
+      ptId: msgobject.ptId
+    }, function(err, result){
+      var cnt;
+      cnt = result + 1;
+      msgobject.msgIndex = cnt;
+      msgobject.msgId = msgobject.ptId + cnt;
+      return messageModel.insertMessage(msgobject, function(err){
+        return callback(null);
+      });
+    });
+  },
   getMessageListBySender: function(_user, callback){
     var condition;
     condition = objectify('sender', _user);
@@ -40,14 +52,14 @@ Message = {
   getMessageListByReceiver: function(_user, callback){
     var condition;
     condition = objectify('receiver', _user);
-    return Message.__getMessageListByUser(condition, function(err, result){
+    return Message.getMessageListByUser(condition, function(err, result){
       if (err) {
         return callback(err);
       }
       return callback(null, result);
     });
   },
-  __getMessageListByUser: function(condition, callback){
+  getMessageListByUser: function(condition, callback){
     if (!condition) {
       return callback('Param Error.');
     }
@@ -70,3 +82,9 @@ Message = {
     });
   }
 };
+import$(module.exports, Message);
+function import$(obj, src){
+  var own = {}.hasOwnProperty;
+  for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+  return obj;
+}

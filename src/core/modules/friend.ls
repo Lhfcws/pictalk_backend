@@ -16,7 +16,7 @@ reverse_frd = (_frd) ->
  * @description friend-model Controller
  * @module
  */
-friend =
+Friend =
   add-friend: (_friend, callback) ->
     condition = {}
     condition =
@@ -59,11 +59,11 @@ friend =
       user-id: _friend.user-id
       friend-id: _friend.friend-id
 
-    friend.friend-exist condition, (err, exist) ->
+    Friend.friend-exist condition, (err, exist) ->
       if not exist
-        return callback errors.dev-error.friend_NEXIST
+        return callback new errors 1, \FRIEND_NEXIST
 
-      condition.friend-nickname = _friend.nickname
+      condition.nickname = _friend.nickname
 
       friend-model.update-friend condition, (err) ->
         return callback null
@@ -75,10 +75,9 @@ friend =
 
   delete-friend: (_condition, callback) ->
     condition = condition1 = {}
-    fllag = false
+    flag = false
 
     condition.user-id = _condition.user-id
-    c
     if typeof _condition.friend-id == 'string'
       flag = true
       condition.friend-id = _condition.friend-id
@@ -96,7 +95,7 @@ friend =
               if err0
                 throw err0
 
-          friend.get-friends condition, (err0, result) ->
+          friend-model.get-friends condition, (err0, result) ->
             async.each result, iterator, (err1) ->
               return cb1 null
       ,
@@ -107,4 +106,4 @@ friend =
       (err) ->
         return callback null
 
-
+module.exports <<< Friend

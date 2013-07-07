@@ -62,7 +62,7 @@ Picture = {
       });
     });
   },
-  deleteAPicture: function(_picture, callback){
+  deletePicture: function(_picture, callback){
     var picture;
     picture = objectify(_picture);
     return pictureModel.deletePicture(picture, function(err){
@@ -83,5 +83,16 @@ Picture = {
     return pictureModel.getPictures(picture, function(err, result){
       return callback(null, result);
     });
+  },
+  getId: function(_picture, callback){
+    return Picture.getAPicture(_picture, function(err, result){
+      return callback(null, result._id);
+    });
   }
 };
+import$(modules.exports, Picture);
+function import$(obj, src){
+  var own = {}.hasOwnProperty;
+  for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+  return obj;
+}

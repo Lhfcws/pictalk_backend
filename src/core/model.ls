@@ -6,7 +6,7 @@
 
 require! [async, './database', '../conf/errors']
 
-db = Database.sync-db!
+db = database.sync-db!
 
 /**
  * @description Simple SQL operation wrapper for mongoskin.

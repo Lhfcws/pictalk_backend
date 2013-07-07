@@ -3,9 +3,11 @@
  * @author Lhfcws
  * @module
  */
+var config;
+config = require('../conf/config');
 /**
  * @description Shallow copy of an object.
- */
+ **/
 exports.copy = function(_obj){
   var obj, i$, ref$, len$, key;
   obj = {};
@@ -15,3 +17,7 @@ exports.copy = function(_obj){
   }
   return obj;
 };
+/**
+ * @description Return project path.
+ **/
+exports.root = config.root;

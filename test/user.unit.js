@@ -14,10 +14,10 @@ testpwd = MD5('123456');
 testuser = {
   userId: testuid,
   password: testpwd,
-  username: lhfcws,
+  username: 'lhfcws',
   email: testuid
 };
-describe('User module', function(){
+describe('User module Unit Test', function(){
   describe('register', function(){
     can('User<lhfcws@test.com> register successfully.', function(){
       user.register(testuser, err(function(){
@@ -39,7 +39,7 @@ describe('User module', function(){
     });
   });
   describe('user-exist', function(){
-    can('User<lhfcws@test.com> exist.', function(){
+    can('should exist user<lhfcws@test.com>.', function(){
       user.userExist(testuser, function(err, result){
         result.should.equal(true);
         done();
@@ -47,7 +47,7 @@ describe('User module', function(){
     });
   });
   describe('set-avatar', function(){
-    can('User avatar changed.', function(){
+    can('should change user avatar.', function(){
       var userObj;
       userObj = helper.copy(testuser);
       userObj.avatar = '/home/lhfcws/avatar/pikachu.png';
@@ -66,7 +66,7 @@ describe('User module', function(){
     });
   });
   describe('change-password', function(){
-    can('User password changed.', function(){
+    can('should change user password.', function(){
       var userObj;
       userObj = helper.copy(testuser);
       userObj.newPassword = MD5('654321');
@@ -85,7 +85,7 @@ describe('User module', function(){
     });
   });
   describe('get-a-user', function(){
-    can('Return a user by condition.', function(){
+    can('should return a user by condition.', function(){
       var userObj;
       userObj = helper.copy(testuser);
       delete userObj.password;
@@ -99,7 +99,7 @@ describe('User module', function(){
     });
   });
   describe('get-users', function(){
-    can('Return users array by condition.', function(){
+    can('should return users array by condition.', function(){
       var userObj;
       userObj = helper.copy(testuser);
       delete userObj.password;
@@ -114,7 +114,7 @@ describe('User module', function(){
     });
   });
   describe('update-user-info', function(){
-    can('User information updated.', function(){
+    can('should update user information.', function(){
       var userObj;
       userObj = helper.copy(testuser);
       userObj.username = 'Lhfcws WWJ';
@@ -135,7 +135,7 @@ describe('User module', function(){
     });
   });
   describe('delete-user', function(){
-    can('User<lhfcws@test.com> deleted.', function(){
+    can('should delete user<lhfcws@test.com>.', function(){
       user.deleteUser({
         userId: testuid
       }, function(err){

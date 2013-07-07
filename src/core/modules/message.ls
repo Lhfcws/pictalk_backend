@@ -1,5 +1,5 @@
 /**
- * @description Message Controller.
+ * @description message Controller.
  * @author Lhfcws
  * @file
  **/
@@ -25,8 +25,14 @@ objectify = (attr, _obj) ->
  * @module
  */
 Message =
-  create-a-message: (message, callback) ->
-    #pass
+  create-a-message: (msgobject, callback) ->
+    message-model.count-message {pt-id: msgobject.pt-id}, (err, result) ->
+      cnt = result + 1
+      msgobject.msg-index = cnt
+      msgobject.msg-id = msgobject.pt-id + cnt
+
+      message-model.insert-message msgobject, (err) ->
+        return callback null
 
   get-message-list-by-sender: (_user, callback) ->
     condition = objectify \sender , _user
@@ -39,7 +45,7 @@ Message =
   get-message-list-by-receiver: (_user, callback) ->
     condition = objectify \receiver , _user
 
-    Message.__get-message-list-by-user condition, (err, result) ->
+    Message.get-message-list-by-user condition, (err, result) ->
       if err
         return callback err
       return callback null, result
@@ -61,3 +67,5 @@ Message =
 
     message-model.get-messages condition, (err, result) ->
       return callback null, result
+
+module.exports <<< Message

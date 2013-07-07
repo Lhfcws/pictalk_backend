@@ -3,7 +3,7 @@
  * @author Lhfcws
  * @file
  **/
-var async, assert, friendModel, errors, reverse_frd, friend;
+var async, assert, friendModel, errors, reverse_frd, Friend;
 async = require('async');
 assert = require('assert');
 friendModel = require('./friend-model');
@@ -18,7 +18,7 @@ reverse_frd = function(_frd){
  * @description friend-model Controller
  * @module
  */
-friend = {
+Friend = {
   addFriend: function(_friend, callback){
     var condition, condition1;
     condition = {};
@@ -67,11 +67,11 @@ friend = {
       userId: _friend.userId,
       friendId: _friend.friendId
     };
-    return friend.friendExist(condition, function(err, exist){
+    return Friend.friendExist(condition, function(err, exist){
       if (!exist) {
-        return callback(errors.devError.friend_NEXIST);
+        return callback(new errors(1, 'FRIEND_NEXIST'));
       }
-      condition.friendNickname = _friend.nickname;
+      condition.nickname = _friend.nickname;
       return friendModel.updateFriend(condition, function(err){
         return callback(null);
       });
@@ -87,11 +87,10 @@ friend = {
     });
   },
   deleteFriend: function(_condition, callback){
-    var condition, condition1, fllag, flag;
+    var condition, condition1, flag;
     condition = condition1 = {};
-    fllag = false;
+    flag = false;
     condition.userId = _condition.userId;
-    c;
     if (typeof _condition.friendId === 'string') {
       flag = true;
       condition.friendId = _condition.friendId;
@@ -114,7 +113,7 @@ friend = {
               }
             });
           };
-          return friend.getFriends(condition, function(err0, result){
+          return friendModel.getFriends(condition, function(err0, result){
             return async.each(result, iterator, function(err1){
               return cb1(null);
             });
@@ -130,3 +129,9 @@ friend = {
     });
   }
 };
+import$(module.exports, Friend);
+function import$(obj, src){
+  var own = {}.hasOwnProperty;
+  for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+  return obj;
+}

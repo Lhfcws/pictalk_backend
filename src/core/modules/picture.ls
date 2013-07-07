@@ -51,7 +51,7 @@ Picture =
       picture-model.insert-picture picture, (err) ->
         return callback null
 
-  delete-a-picture: (_picture, callback) ->
+  delete-picture: (_picture, callback) ->
     picture = objectify _picture
     picture-model.delete-picture picture, (err) ->
       return callback null
@@ -67,4 +67,8 @@ Picture =
     picture-model.get-pictures picture, (err, result) ->
       return callback null, result
 
+  get-id: (_picture, callback) ->
+    Picture.get-a-picture _picture, (err, result) ->
+      return callback null, result._id
   
+modules.exports <<< Picture

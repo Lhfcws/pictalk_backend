@@ -5,6 +5,8 @@
  **/
 require! [mongoskin, async, '../conf/config']
 
+mongo = config.mongo
+
 /**
  * @description Mongoose connect & disconnect
  * @todo if there're various db (maybe for test),
@@ -35,7 +37,7 @@ Mongoose =
  **/
 Mongoskin =
   sync-connect: !->
-    db = Mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
+    db = mongoskin.db mongo.host+':'+mongo.port+'/'+mongo.db
     return db
 
   connect: (callback) ->
@@ -51,9 +53,9 @@ Mongoskin =
  * @description Interface of the module.
  * @module
  **/
-Database =
-  _db = null
-  _mongo = Mongoskin
+module.exports =
+  _db: null
+  _mongo: Mongoskin
 
   sync-db: !->
     if !@_db
@@ -80,5 +82,4 @@ Database =
         @_db = null
       return callback err
 
-module.exports <<< Database
 

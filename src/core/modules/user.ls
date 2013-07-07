@@ -105,3 +105,5 @@ User =
       if not result
         return callback new errors 1, 'USER_NEXIST'
       return callback null, result
+
+module.exports <<< User

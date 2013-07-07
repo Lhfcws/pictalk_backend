@@ -3,10 +3,11 @@
  * @author Lhfcws
  * @version 0.1
  **/
-var mongoskin, async, config, Mongoose, Mongoskin, Database, _db, _mongo;
+var mongoskin, async, config, mongo, Mongoose, Mongoskin;
 mongoskin = require('mongoskin');
 async = require('async');
 config = require('../conf/config');
+mongo = config.mongo;
 /**
  * @description Mongoose connect & disconnect
  * @todo if there're various db (maybe for test),
@@ -39,7 +40,7 @@ Mongoose = {
 Mongoskin = {
   syncConnect: function(){
     var db;
-    db = Mongoskin.db(mongo.host + ':' + mongo.port + '/' + mongo.db);
+    db = mongoskin.db(mongo.host + ':' + mongo.port + '/' + mongo.db);
     return db;
   },
   connect: function(callback){
@@ -58,44 +59,38 @@ Mongoskin = {
  * @description Interface of the module.
  * @module
  **/
-Database = [
-  _db = null, _mongo = Mongoskin, {
-    syncDb: function(){
-      if (!this._db) {
-        this._db = Mongoskin.syncConnect();
-        return this._db;
-      } else {
-        return this._db;
-      }
-    },
-    db: function(callback){
-      if (!this._db) {
-        return connectDb(function(err, db_){
-          this._db = db_;
-          return callback(null, db_);
-        });
-      } else {
-        return callback(null, this._db);
-      }
-    },
-    connectDb: function(callback){
-      return this._mongo.connect(function(err, db_){
+module.exports = {
+  _db: null,
+  _mongo: Mongoskin,
+  syncDb: function(){
+    if (!this._db) {
+      this._db = Mongoskin.syncConnect();
+      return this._db;
+    } else {
+      return this._db;
+    }
+  },
+  db: function(callback){
+    if (!this._db) {
+      return connectDb(function(err, db_){
+        this._db = db_;
         return callback(null, db_);
       });
-    },
-    disconnectDb: function(callback){
-      return this._mongo.disconnect(function(err){
-        if (!err) {
-          this._db = null;
-        }
-        return callback(err);
-      });
+    } else {
+      return callback(null, this._db);
     }
+  },
+  connectDb: function(callback){
+    return this._mongo.connect(function(err, db_){
+      return callback(null, db_);
+    });
+  },
+  disconnectDb: function(callback){
+    return this._mongo.disconnect(function(err){
+      if (!err) {
+        this._db = null;
+      }
+      return callback(err);
+    });
   }
-];
-import$(module.exports, Database);
-function import$(obj, src){
-  var own = {}.hasOwnProperty;
-  for (var key in src) if (own.call(src, key)) obj[key] = src[key];
-  return obj;
-}
+};

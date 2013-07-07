@@ -7,7 +7,7 @@ var async, database, errors, db, model;
 async = require('async');
 database = require('./database');
 errors = require('../conf/errors');
-db = Database.syncDb();
+db = database.syncDb();
 /**
  * @description Simple SQL operation wrapper for mongoskin.
  * @module

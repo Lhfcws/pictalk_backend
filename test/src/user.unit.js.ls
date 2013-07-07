@@ -5,20 +5,22 @@
  */
 
 require! [assert, MD5, '../bin/core/modules/user', '../bin/common/helper']
-can = it # 'it' is a keyword in LiveScript.
 
+can = it  # 'it' is a keyword in LiveScript.
 
 testuid = 'lhfcws@test.com'
+
 testpwd = MD5 '123456'
+
 testuser =
   user-id: testuid
   password: testpwd
-  username: lhfcws
+  username: \lhfcws
   email: testuid
 
 
 # Unit Test
-describe 'User module', !->
+describe 'User module Unit Test', !->
   describe 'register', !->
     can 'User<lhfcws@test.com> register successfully.', !->
       user.register testuser, (err) !->
@@ -34,13 +36,13 @@ describe 'User module', !->
         done!
 
   describe 'user-exist', !->
-    can 'User<lhfcws@test.com> exist.', !->
+    can 'should exist user<lhfcws@test.com>.', !->
       user.user-exist testuser, !(err, result) ->
         result.should.equal true 
         done!
 
   describe 'set-avatar', !->
-    can 'User avatar changed.', !->
+    can 'should change user avatar.', !->
       user-obj = helper.copy testuser
       user-obj.avatar = '/home/lhfcws/avatar/pikachu.png'
 
@@ -54,7 +56,7 @@ describe 'User module', !->
           done!
 
   describe 'change-password', !->
-    can 'User password changed.', !->
+    can 'should change user password.', !->
       user-obj = helper.copy testuser
       user-obj.new-password = MD5 '654321'
 
@@ -68,7 +70,7 @@ describe 'User module', !->
           done!
 
   describe 'get-a-user', !->
-    can 'Return a user by condition.', !->
+    can 'should return a user by condition.', !->
       user-obj = helper.copy testuser
       delete user-obj.password
 
@@ -79,7 +81,7 @@ describe 'User module', !->
         done!
 
   describe 'get-users', !->
-    can 'Return users array by condition.', !->
+    can 'should return users array by condition.', !->
       user-obj = helper.copy testuser
       delete user-obj.password
 
@@ -91,7 +93,7 @@ describe 'User module', !->
         done!
 
   describe 'update-user-info', !->
-    can 'User information updated.', !->
+    can 'should update user information.', !->
       user-obj = helper.copy testuser
       user-obj.username = 'Lhfcws WWJ'
       user-obj.mobile = '10086'
@@ -108,7 +110,7 @@ describe 'User module', !->
 
 
   describe 'delete-user', !->
-    can 'User<lhfcws@test.com> deleted.', !->
+    can 'should delete user<lhfcws@test.com>.', !->
       user.delete-user {user-id: testuid}, !(err) ->
         if err
           throw err
