@@ -24,7 +24,7 @@ testmsg =
     center-y: 100
 
 
-descibe 'Message Unit Test', !->
+describe 'Message Unit Test', !->
   describe 'create-a-message', !->
     can 'should create a fake message `Hello World!`.', !->
       message.create-a-message testmsg, (err) ->

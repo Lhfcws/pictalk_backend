@@ -4,4 +4,7 @@ build:
 clean:
 	rm -Rf *.js
 
-.PHONY: build clean
+test:
+	mocha *.js
+
+.PHONY: build clean test

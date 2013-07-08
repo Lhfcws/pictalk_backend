@@ -71,4 +71,4 @@ Picture =
     Picture.get-a-picture _picture, (err, result) ->
       return callback null, result._id
   
-modules.exports <<< Picture
+module.exports <<< Picture

@@ -25,7 +25,7 @@ testmsg = {
     centerY: 100
   }
 };
-descibe('Message Unit Test', function(){
+describe('Message Unit Test', function(){
   describe('create-a-message', function(){
     can('should create a fake message `Hello World!`.', function(){
       message.createAMessage(testmsg, function(err){
