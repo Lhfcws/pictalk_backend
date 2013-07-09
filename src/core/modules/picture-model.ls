@@ -23,8 +23,8 @@ Picture-model =
         throw err
       return callback null
 
-  update-picture: (new-picture, callback) ->
-    model.update \picture, new-picture, (err) ->
+  update-picture: (condition, new-picture, callback) ->
+    model.update \picture, condition, new-picture, (err) ->
       if err
         throw err
       return callback null

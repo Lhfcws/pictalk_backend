@@ -10,7 +10,7 @@ objectify = (attr, _obj) ->
   condition = {}
 
   if typeof _obj == 'string'
-    condition[attr] = _picture
+    condition[attr] = _obj
   else if _obj[attr] != 'undefined'
     condition = _obj
   else if _obj.user-id != 'undefined' and attr == 'sender'

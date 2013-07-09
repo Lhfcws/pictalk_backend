@@ -23,8 +23,8 @@ message-model =
         throw err
       return callback null
 
-  update-message: (new-message, callback) ->
-    model.update \message, new-message, (err) ->
+  update-message: (condition, new-message, callback) ->
+    model.update \message, condition, new-message, (err) ->
       if err
         throw err
       return callback null

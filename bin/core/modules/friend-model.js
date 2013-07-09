@@ -30,8 +30,8 @@ friendModel = {
       return callback(null);
     });
   },
-  updateFriend: function(newFriend, callback){
-    return model.update('friend', newFriend, function(err){
+  updateFriend: function(condition, newFriend, callback){
+    return model.update('friend', condition, newFriend, function(err){
       if (err) {
         throw err;
       }
@@ -62,7 +62,11 @@ friendModel = {
       if (err) {
         throw err;
       }
-      return callback(null, result);
+      if (result !== null) {
+        return callback(null, result);
+      } else {
+        return callback(null, void 8);
+      }
     });
   }
 };

@@ -23,8 +23,8 @@ friend-model =
         throw err
       return callback null
 
-  update-friend: (new-friend, callback) ->
-    model.update \friend, new-friend, (err) ->
+  update-friend: (condition, new-friend, callback) ->
+    model.update \friend, condition, new-friend, (err) ->
       if err
         throw err
       return callback null
@@ -45,7 +45,10 @@ friend-model =
     model.find \friend, condition, (err, result) ->
       if err
         throw err
-      return callback null, result
+      if result != null
+        return callback null, result
+      else
+        return callback null, void
 
 
 module.exports <<< friend-model

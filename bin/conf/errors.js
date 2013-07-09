@@ -7,12 +7,7 @@
  * @description Error level index.
  */
 var errorLevelIndex, errorDictionary, Errors;
-errorLevelIndex = [{
-  0: 'Fatal-error',
-  1: 'Dev-error',
-  2: 'User-error',
-  4: 'Warning'
-}];
+errorLevelIndex = ['Fatal-error', 'Dev-error', 'User-error', 'Warning'];
 /**
  * @description An object include error message list for 4 error levels. 
  */
@@ -25,6 +20,7 @@ errorDictionary = {
   'COUNT_ERROR': 'Database count failed.',
   'USER_NCOMPLETE': 'User object is not complete, something vital like `email` or `username` or `password`',
   'USER_NEXIST': 'User does not existed.',
+  'FRIEND_NEXIST': 'The friend pair doesnot exist.',
   'USER_DUPLICATE': 'User with the same email has existed, please change another one.',
   'USER_LOGIN': 'User does not existed or password is not correct.'
 };
@@ -48,9 +44,4 @@ Errors = (function(){
   };
   return Errors;
 }());
-import$(module.exports, Errors);
-function import$(obj, src){
-  var own = {}.hasOwnProperty;
-  for (var key in src) if (own.call(src, key)) obj[key] = src[key];
-  return obj;
-}
+module.exports = Errors;

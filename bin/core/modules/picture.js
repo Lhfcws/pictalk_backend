@@ -47,25 +47,43 @@ objectify = function(_picture){
  * @module
  */
 Picture = {
+  __generatePtId: function(_picture, callback){
+    return pictureModel.getAPicture(_picture, function(err, result){
+      return callback(null, result._id.toHexString());
+    });
+  },
   createAPicture: function(_picture, callback){
     var picture;
     picture = {};
     picture.picUrl = _picture.picUrl;
     picture.establisher = _picture.establisher;
-    picture.esTime = datetime(new Date(), '%Y-%m-%d-%H-%M-%S');
+    picture.esTime = datetime.format(new Date(), '%Y-%m-%d-%H-%M-%S');
     picture.mimetype = mimetype(_picture.picUrl);
     picture.picName = basename(_picture.picUrl);
     return fs.readFile(_picture.picUrl, function(err, data){
       picture.picId = MD5(data);
       return pictureModel.insertPicture(picture, function(err){
-        return callback(null);
+        return Picture.__generatePtId(picture, function(err, ptId){
+          if (err) {
+            throw err;
+          }
+          return pictureModel.updatePicture(picture, {
+            $set: {
+              ptId: ptId
+            }
+          }, function(err){
+            if (err) {
+              throw err;
+            }
+            return callback(null);
+          });
+        });
       });
     });
   },
   deletePicture: function(_picture, callback){
-    var picture;
-    picture = objectify(_picture);
-    return pictureModel.deletePicture(picture, function(err){
+    _picture = objectify(_picture);
+    return pictureModel.deletePicture(_picture, function(err){
       return callback(null);
     });
   },
@@ -86,7 +104,7 @@ Picture = {
   },
   getId: function(_picture, callback){
     return Picture.getAPicture(_picture, function(err, result){
-      return callback(null, result._id);
+      return callback(null, result.ptId);
     });
   }
 };

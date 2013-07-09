@@ -30,8 +30,8 @@ PictureModel = {
       return callback(null);
     });
   },
-  updatePicture: function(newPicture, callback){
-    return model.update('picture', newPicture, function(err){
+  updatePicture: function(condition, newPicture, callback){
+    return model.update('picture', condition, newPicture, function(err){
       if (err) {
         throw err;
       }

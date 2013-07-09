@@ -13,16 +13,18 @@ can = it;
 testfrd = {
   userId: 'zhaojian@test.com',
   friendId: 'chenxuejia@test.com',
-  nickname: 'aligod'
+  friendName: 'aligod',
+  userName: 'zhaojian'
 };
 testfrd_ = {
   userId: 'chenxuejia@test.com',
   friendId: 'zhaojian@test.com',
-  nickname: 'tencentgod'
+  userName: 'aligod',
+  friendName: 'zhaojian'
 };
 describe('Friend Unit Test', function(){
   describe('add-friend', function(){
-    can('should add a new friend pair <`zhaojian`, `chenxuejia`>', function(){
+    can('should add a new friend pair <`zhaojian`, `chenxuejia`>', function(done){
       friend.addFriend(testfrd, function(err){
         if (err) {
           throw err;
@@ -32,45 +34,44 @@ describe('Friend Unit Test', function(){
     });
   });
   describe('friend-exist', function(){
-    can('should exist friend pair <`zhaojian`, `chenxuejia`>', function(){
+    can('should exist friend pair <`zhaojian`, `chenxuejia`>', function(done){
       friend.friendExist(testfrd, function(err, result){
         if (err) {
           throw err;
         }
-        result.should.equal(true);
+        assert.equal(result, true);
         return done();
       });
     });
   });
   describe('update-friend-nickname', function(){
-    can('should update chenxuejia nickname into `aligod`', function(){
+    can('should update chenxuejia nickname into `aligod`', function(done){
       friend.updateFriendNickname(testfrd, function(err){
         if (err) {
           throw err;
         }
-        return friendModel.findFriend(testfrd, function(err, result){
+        return friendModel.getAFriend(testfrd, function(err, result){
           if (err) {
             throw err;
           }
-          result.nickname.should.equal(testfrd.nickname);
+          assert.equal(result.nickname, testfrd.nickname);
           return done();
         });
       });
     });
   });
   describe('get-friends-by-user', function(){
-    can('should return a friend list/array by user', function(){
+    can('should return a friend list/array by user', function(done){
       friend.getFriendsByUser({
         userId: testfrd.userId
       }, function(err, result){
-        result.length.should.equal(1);
-        result[0].friendId.should.equal('chenxuejia@test.com');
+        assert.equal(result[0].friendId, 'chenxuejia@test.com');
         return done();
       });
     });
   });
   describe('delete-friend', function(){
-    can('should delete friend pair <`zhaojian`, `chenxuejia`>', function(){
+    can('should delete friend pair <`zhaojian`, `chenxuejia`>', function(done){
       friend.deleteFriend(testfrd, function(err){
         if (err) {
           throw err;
@@ -79,7 +80,7 @@ describe('Friend Unit Test', function(){
           if (err) {
             throw err;
           }
-          result.should.equal(false);
+          assert.equal(result, false);
           return done();
         });
       });

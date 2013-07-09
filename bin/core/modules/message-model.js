@@ -30,8 +30,8 @@ messageModel = {
       return callback(null);
     });
   },
-  updateMessage: function(newMessage, callback){
-    return model.update('message', newMessage, function(err){
+  updateMessage: function(condition, newMessage, callback){
+    return model.update('message', condition, newMessage, function(err){
       if (err) {
         throw err;
       }

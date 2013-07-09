@@ -14,55 +14,54 @@ ptkobject = {
 ptk = {};
 describe('Picture Unit Test', function(){
   describe('create-a-picture', function(){
-    can('should create a picture `test1.png`', function(){
+    can('should create a picture `test1.png`', function(done){
       picture.createAPicture(ptkobject, function(err){
-        return picture.getAPicture(pikobject, function(err, result){
+        return picture.getAPicture(ptkobject, function(err, result){
           if (err) {
             throw err;
           }
-          result.mimetype.should.equal('png');
           ptk = result;
+          assert.equal(result.mimetype, 'png');
           return done();
         });
       });
     });
   });
   describe('get-a-picture', function(){
-    can('should return a picture object `test1.png`', function(){
+    can('should return a picture object `test1.png`', function(done){
       picture.getAPicture(ptkobject, function(err, result){
         if (err) {
           throw err;
         }
-        result.mimetype.should.equal('png');
+        assert.equal(result.mimetype, 'png');
         return done();
       });
     });
   });
   describe('get-pictures', function(){
-    can('should return picture object list [`test1.png`]', function(){
-      picture.getAPicture(ptkobject, function(err, result){
+    can('should return picture object list [`test1.png`]', function(done){
+      picture.getPictures(ptkobject, function(err, result){
         if (err) {
           throw err;
         }
-        result.length.should.equal(1);
-        result[0].mimetype.should.equal('png');
+        assert.equal(result[0].mimetype, 'png');
         return done();
       });
     });
   });
   describe('get-id', function(){
-    can('should get a picture id', function(){
+    can('should get a picture id', function(done){
       picture.getId(ptkobject, function(err, id){
         if (err) {
           throw err;
         }
-        id.should.equal(ptk._id);
+        assert.equal(id, ptk._id);
         return done();
       });
     });
   });
   describe('delete-picture', function(){
-    can('should delete picture `test1.png`', function(){
+    can('should delete picture `test1.png`', function(done){
       picture.deletePicture({
         _id: ptk._id
       }, function(err){

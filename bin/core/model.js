@@ -50,7 +50,7 @@ model = {
   insert: function(collection, data, callback){
     data == null && (data = {});
     if (data === {}) {
-      return callback(errors.INSERT_ERROR);
+      return callback(new errors(0, 'INSERT_ERROR'));
     } else {
       return db.collection(collection).insert(data, function(err){
         if (err) {
@@ -64,7 +64,7 @@ model = {
     condition == null && (condition = {});
     content == null && (content = {});
     if (content === {}) {
-      return callback(errors.UPDATE_ERROR);
+      return callback(new errors(0, 'UPDATE_ERROR'));
     }
     return db.collection(collection).update(condition, content, function(err){
       if (err) {

@@ -8,10 +8,10 @@
  * @description Error level index.
  */
 error-level-index = [
-  0: \Fatal-error,
-  1: \Dev-error ,
-  2: \User-error,
-  4: \Warning
+  \Fatal-error,
+  \Dev-error ,
+  \User-error,
+  \Warning
 ]
 
 /**
@@ -28,6 +28,7 @@ error-dictionary =
   # DEV-ERROR
   \USER_NCOMPLETE : 'User object is not complete, something vital like `email` or `username` or `password`'
   \USER_NEXIST : 'User does not existed.'
+  \FRIEND_NEXIST : 'The friend pair doesnot exist.'
   # USER-ERROR
   \USER_DUPLICATE : 'User with the same email has existed, please change another one.'
   \USER_LOGIN : 'User does not existed or password is not correct.'
@@ -49,4 +50,4 @@ class Errors
     console.log '[' + @error-level-msg + ']  ' + @err-msg + '\n'
     console.log '!!!!!!'
 
-module.exports <<< Errors
+module.exports = Errors

@@ -38,22 +38,32 @@ objectify = (_picture) ->
  * @module
  */
 Picture =
+  __generate-pt-id: (_picture, callback) ->
+    picture-model.get-a-picture _picture, (err, result) ->
+      return callback null, result._id.toHexString!
+
   create-a-picture: (_picture, callback) ->
     picture = {}
     picture.pic-url = _picture.pic-url
     picture.establisher = _picture.establisher
-    picture.es-time = datetime new Date!, '%Y-%m-%d-%H-%M-%S' 
+    picture.es-time = datetime.format new Date!, '%Y-%m-%d-%H-%M-%S' 
     picture.mimetype = mimetype _picture.pic-url
     picture.pic-name = basename _picture.pic-url
 
     fs.readFile _picture.pic-url, (err, data) ->
       picture.pic-id = MD5(data)
       picture-model.insert-picture picture, (err) ->
-        return callback null
+        Picture.__generate-pt-id picture, (err, pt-id) ->
+          if err
+            throw err
+          picture-model.update-picture picture, {$set: {pt-id: pt-id}}, (err) ->
+            if err
+              throw err
+            return callback null
 
   delete-picture: (_picture, callback) ->
-    picture = objectify _picture
-    picture-model.delete-picture picture, (err) ->
+    _picture = objectify _picture
+    picture-model.delete-picture _picture, (err) ->
       return callback null
 
   get-a-picture: (_picture, callback) ->
@@ -69,6 +79,6 @@ Picture =
 
   get-id: (_picture, callback) ->
     Picture.get-a-picture _picture, (err, result) ->
-      return callback null, result._id
+      return callback null, result.pt-id
   
 module.exports <<< Picture

@@ -23,8 +23,8 @@ User-model =
         throw err
       return callback null
 
-  update-user: (new-user, callback) ->
-    model.update \user, new-user, (err) ->
+  update-user: (condition, new-user, callback) ->
+    model.update \user, condition, new-user, (err) ->
       if err
         throw err
       return callback null

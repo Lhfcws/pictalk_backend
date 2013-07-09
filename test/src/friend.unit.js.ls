@@ -11,57 +11,57 @@ can = it
 testfrd =
   user-id: \zhaojian@test.com
   friend-id: \chenxuejia@test.com
-  nickname: \aligod
+  friend-name: \aligod
+  user-name: \zhaojian
 
 testfrd_ =
   user-id: \chenxuejia@test.com
   friend-id: \zhaojian@test.com
-  nickname: \tencentgod
+  user-name: \aligod
+  friend-name: \zhaojian
   
 describe 'Friend Unit Test', !->
   describe 'add-friend', !->
-    can 'should add a new friend pair <`zhaojian`, `chenxuejia`>', !->
+    can 'should add a new friend pair <`zhaojian`, `chenxuejia`>', !(done)->
       friend.add-friend testfrd, (err) ->
         if err
           throw err
-
         done!
 
   describe 'friend-exist', !->
-    can 'should exist friend pair <`zhaojian`, `chenxuejia`>', !->
+    can 'should exist friend pair <`zhaojian`, `chenxuejia`>', !(done)->
       friend.friend-exist testfrd, (err, result) ->
         if err
           throw err
-        result.should.equal true
+        assert.equal result, true
         done!
 
   describe 'update-friend-nickname', !->
-    can 'should update chenxuejia nickname into `aligod`', !->
+    can 'should update chenxuejia nickname into `aligod`', !(done)->
       friend.update-friend-nickname testfrd, (err) ->
         if err
           throw err
-        
-        friend-model.find-friend testfrd, (err, result) ->
+ 
+        friend-model.get-a-friend testfrd, (err, result) ->
           if err
             throw err
-          result.nickname.should.equal testfrd.nickname
+          assert.equal result.nickname, testfrd.nickname
           done!
 
   describe 'get-friends-by-user', !->
-    can 'should return a friend list/array by user', !->
+    can 'should return a friend list/array by user', !(done)->
       friend.get-friends-by-user {user-id: testfrd.user-id}, (err, result) ->
-        result.length.should.equal 1
-        result[0].friend-id.should.equal 'chenxuejia@test.com'
+        assert.equal result[0].friend-id, 'chenxuejia@test.com'
         done!
 
   describe 'delete-friend', !->
-    can 'should delete friend pair <`zhaojian`, `chenxuejia`>', !->
+    can 'should delete friend pair <`zhaojian`, `chenxuejia`>', !(done)->
       friend.delete-friend testfrd, (err) ->
         if err
           throw err
         friend.friend-exist testfrd, (err, result) ->
           if err
             throw err
-          result.should.equal false
+          assert.equal result, false
           done!
 

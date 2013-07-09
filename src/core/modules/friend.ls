@@ -17,44 +17,48 @@ reverse_frd = (_frd) ->
  * @module
  */
 Friend =
-  add-friend: (_friend, callback) ->
+  friend-exist: !(_friend, callback) ->
+    condition =
+      user-id: _friend.user-id
+      friend-id: _friend.friend-id
+
+    friend-model.count-friend condition, (err, result) ->
+      return callback null, result > 0
+
+  add-friend: !(_friend, callback) ->
     condition = {}
     condition =
       user-id: _friend.user-id
       friend-id: _friend.friend-id
     condition1 = reverse_frd condition
 
-    friend-model.friend-exist condition, (err, result) ->
+    Friend.friend-exist condition, (err, result) ->
       if not not result
         return callback 'Friend exist'
 
-      condition.friend-nickname = _friend.friend-name
-      condition1.friend-nickname = _friend.user-name
+      condition.nickname = _friend.friend-name
+      condition1.nickname = _friend.user-name
 
       async.series [
-        (err, cb1)->
+        (cb1)->
           friend-model.insert-friend condition, (err) ->
+            if err
+              throw err
             return cb1 null
         ,
-        (err, cb2) ->
+        (cb2) ->
           friend-model.insert-friend condition1, (err) ->
+            if err
+              throw err
             return cb2 null
         ],
         (err) ->
+          if err
+            throw err
           return callback null
 
 
-  friend-exist: (_friend, callback) ->
-    condition =
-      user-id: _friend.user-id
-      friend-id: _friend.friend-id
-
-    friend-model.find-friend condition, (err, result) ->
-      if not result
-        return callback null, false
-      return callback null, true
-
-  update-friend-nickname: (_friend, callback) ->
+  update-friend-nickname: !(_friend, callback) ->
     condition =
       user-id: _friend.user-id
       friend-id: _friend.friend-id
@@ -63,17 +67,15 @@ Friend =
       if not exist
         return callback new errors 1, \FRIEND_NEXIST
 
-      condition.nickname = _friend.nickname
-
-      friend-model.update-friend condition, (err) ->
+      friend-model.update-friend condition, _friend, (err) ->
         return callback null
-  
-  get-friends-by-user: (_condition, callback) ->
+ 
+  get-friends-by-user: !(_condition, callback) ->
     condition = { user-id:_condition.user-id }
     friend-model.get-friends condition, (err, result) ->
       return callback null, result
 
-  delete-friend: (_condition, callback) ->
+  delete-friend: !(_condition, callback) ->
     condition = condition1 = {}
     flag = false
 
@@ -84,7 +86,7 @@ Friend =
       condition1 = reverse_frd condition
 
     async.series [
-      (err, cb1)->
+      (cb1)->
         if flag
           friend-model.delete-friend condition1, (err) ->
             return cb1 null
@@ -99,7 +101,7 @@ Friend =
             async.each result, iterator, (err1) ->
               return cb1 null
       ,
-      (err, cb2) ->
+      (cb2) ->
         friend-model.delete-friend condition, (err) ->
           return cb2 null
       ],

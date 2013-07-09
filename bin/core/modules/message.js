@@ -11,7 +11,7 @@ objectify = function(attr, _obj){
   var condition;
   condition = {};
   if (typeof _obj === 'string') {
-    condition[attr] = _picture;
+    condition[attr] = _obj;
   } else if (_obj[attr] !== 'undefined') {
     condition = _obj;
   } else if (_obj.userId !== 'undefined' && attr === 'sender') {

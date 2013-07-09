@@ -37,7 +37,7 @@ model =
 
   insert: (collection, data={}, callback) ->
     if data == {}
-      return callback errors.INSERT_ERROR
+      return callback new errors 0, \INSERT_ERROR
     else
       db.collection collection .insert data, !(err)->
         if err
@@ -46,7 +46,7 @@ model =
 
   update: (collection, condition={}, content={}, callback) ->
     if content == {}
-      return callback errors.UPDATE_ERROR
+      return callback new errors 0, \UPDATE_ERROR
     db.collection collection .update condition, content, !(err) ->
       if err
         throw err

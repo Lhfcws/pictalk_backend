@@ -14,44 +14,42 @@ ptk = {}
 
 describe 'Picture Unit Test', !->
   describe 'create-a-picture', !->
-    can 'should create a picture `test1.png`', !->
+    can 'should create a picture `test1.png`', !(done)->
       picture.create-a-picture ptkobject, (err) ->
-        picture.get-a-picture pikobject, (err, result) ->
+        picture.get-a-picture ptkobject, (err, result) ->
           if err
             throw err
-          result.mimetype.should.equal 'png'
           ptk := result
+          assert.equal result.mimetype, 'png'
           done!
 
   describe 'get-a-picture', !->
-    can 'should return a picture object `test1.png`', !->
+    can 'should return a picture object `test1.png`', !(done)->
       picture.get-a-picture ptkobject, (err, result) ->
         if err
           throw err
-        result.mimetype.should.equal 'png'
+        assert.equal result.mimetype, 'png'
         done!
 
   describe 'get-pictures', !->
-    can 'should return picture object list [`test1.png`]', !->
-      picture.get-a-picture ptkobject, (err, result) ->
+    can 'should return picture object list [`test1.png`]', !(done)->
+      picture.get-pictures ptkobject, (err, result) ->
         if err
           throw err
-        result.length.should.equal 1
-        result[0].mimetype.should.equal 'png'
+        assert.equal result[0].mimetype, 'png'
         done!
 
   describe 'get-id', !->
-    can 'should get a picture id', !->
+    can 'should get a picture id', !(done)->
       picture.get-id ptkobject, (err, id) ->
         if err
           throw err
-        id.should.equal ptk._id
+        assert.equal id, ptk._id
         done!
 
   describe 'delete-picture', !->
-    can 'should delete picture `test1.png`', !->
+    can 'should delete picture `test1.png`', !(done)->
       picture.delete-picture {_id: ptk._id}, (err) ->
         if err
           throw err
         done!
-

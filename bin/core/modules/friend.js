@@ -19,6 +19,16 @@ reverse_frd = function(_frd){
  * @module
  */
 Friend = {
+  friendExist: function(_friend, callback){
+    var condition;
+    condition = {
+      userId: _friend.userId,
+      friendId: _friend.friendId
+    };
+    friendModel.countFriend(condition, function(err, result){
+      return callback(null, result > 0);
+    });
+  },
   addFriend: function(_friend, callback){
     var condition, condition1;
     condition = {};
@@ -27,38 +37,34 @@ Friend = {
       friendId: _friend.friendId
     };
     condition1 = reverse_frd(condition);
-    return friendModel.friendExist(condition, function(err, result){
+    Friend.friendExist(condition, function(err, result){
       if (!!result) {
         return callback('Friend exist');
       }
-      condition.friendNickname = _friend.friendName;
-      condition1.friendNickname = _friend.userName;
+      condition.nickname = _friend.friendName;
+      condition1.nickname = _friend.userName;
       return async.series([
-        function(err, cb1){
+        function(cb1){
           return friendModel.insertFriend(condition, function(err){
+            if (err) {
+              throw err;
+            }
             return cb1(null);
           });
-        }, function(err, cb2){
+        }, function(cb2){
           return friendModel.insertFriend(condition1, function(err){
+            if (err) {
+              throw err;
+            }
             return cb2(null);
           });
         }
       ], function(err){
+        if (err) {
+          throw err;
+        }
         return callback(null);
       });
-    });
-  },
-  friendExist: function(_friend, callback){
-    var condition;
-    condition = {
-      userId: _friend.userId,
-      friendId: _friend.friendId
-    };
-    return friendModel.findFriend(condition, function(err, result){
-      if (!result) {
-        return callback(null, false);
-      }
-      return callback(null, true);
     });
   },
   updateFriendNickname: function(_friend, callback){
@@ -67,12 +73,11 @@ Friend = {
       userId: _friend.userId,
       friendId: _friend.friendId
     };
-    return Friend.friendExist(condition, function(err, exist){
+    Friend.friendExist(condition, function(err, exist){
       if (!exist) {
         return callback(new errors(1, 'FRIEND_NEXIST'));
       }
-      condition.nickname = _friend.nickname;
-      return friendModel.updateFriend(condition, function(err){
+      return friendModel.updateFriend(condition, _friend, function(err){
         return callback(null);
       });
     });
@@ -82,7 +87,7 @@ Friend = {
     condition = {
       userId: _condition.userId
     };
-    return friendModel.getFriends(condition, function(err, result){
+    friendModel.getFriends(condition, function(err, result){
       return callback(null, result);
     });
   },
@@ -96,8 +101,8 @@ Friend = {
       condition.friendId = _condition.friendId;
       condition1 = reverse_frd(condition);
     }
-    return async.series([
-      function(err, cb1){
+    async.series([
+      function(cb1){
         var iterator;
         if (flag) {
           return friendModel.deleteFriend(condition1, function(err){
@@ -119,7 +124,7 @@ Friend = {
             });
           });
         }
-      }, function(err, cb2){
+      }, function(cb2){
         return friendModel.deleteFriend(condition, function(err){
           return cb2(null);
         });

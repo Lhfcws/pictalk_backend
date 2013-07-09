@@ -30,8 +30,8 @@ UserModel = {
       return callback(null);
     });
   },
-  updateUser: function(newUser, callback){
-    return model.update('user', newUser, function(err){
+  updateUser: function(condition, newUser, callback){
+    return model.update('user', condition, newUser, function(err){
       if (err) {
         throw err;
       }
