@@ -2,7 +2,7 @@ PicTalk ---- Communicate by pictures!
 ========
 
 Members: 
-> Lhfcws Wu, Xuejia Chan, Jian Zhao, Aimee Chan
+> Lhfcws Wu, Xuejia Chan, Cyril Zhao, Aimee Chan
 
 
 
